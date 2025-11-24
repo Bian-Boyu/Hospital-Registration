@@ -1,0 +1,79 @@
+# ================
+# 操作系统相关
+# ================
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# ================
+# IDE / 编辑器
+# ================
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+
+# ================
+# 后端 (Spring Boot)
+# ================
+/demo/target/
+/demo/.mvn/wrapper/maven-wrapper.jar
+/demo/.mvn/wrapper/maven-wrapper.properties
+/demo/mvnw
+/demo/mvnw.cmd
+/demo/application-*.yml
+/demo/application-*.properties
+/demo/logs/
+/demo/*.log
+
+# 如果你使用 Gradle 替代 Maven：
+# /backend/build/
+# /backend/gradle/
+# /backend/gradlew
+# /backend/gradlew.bat
+
+# ================
+# 前端 (Vue)
+# ================
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.env.local
+/frontend/.env.*.local
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+/frontend/.nuxt/        
+/frontend/.output/      
+
+# ================
+# 通用依赖 & 构建产物
+# ================
+node_modules/
+dist/
+build/
+out/
+coverage/
+
+# ================
+# 环境变量 & 敏感信息
+# ================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ================
+# 其他
+# ================
+.DS_Store
+*.log
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db

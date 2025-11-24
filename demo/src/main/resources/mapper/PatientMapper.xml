@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.PatientMapper">
+
+    <resultMap id="PatientMap" type="com.example.demo.entity.Patient">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="gender" property="gender"/>
+        <result column="age" property="age"/>
+        <result column="phone" property="phone"/>
+        <result column="id_number" property="idNumber"/>
+        <result column="address" property="address"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,gender,age,phone,id_number,address
+    </sql>
+
+    <insert id="insert" parameterType="com.example.demo.entity.Patient" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO patient(name,gender,age,phone,id_number,address)
+        VALUES (#{name},#{gender},#{age},#{phone},#{idNumber},#{address})
+    </insert>
+
+    <update id="update" parameterType="com.example.demo.entity.Patient">
+        UPDATE patient
+        SET name=#{name},
+            gender=#{gender},
+            age=#{age},
+            phone=#{phone},
+            id_number=#{idNumber},
+            address=#{address}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM patient WHERE id=#{id}
+    </delete>
+
+    <select id="selectById" resultMap="PatientMap">
+        SELECT <include refid="Base_Column_List"/> FROM patient WHERE id=#{id}
+    </select>
+
+    <select id="selectList" resultMap="PatientMap">
+        SELECT <include refid="Base_Column_List"/> FROM patient
+        <where>
+            <if test="name != null">
+                name LIKE #{name}
+            </if>
+            <if test="phone != null">
+                AND phone LIKE #{phone}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+</mapper>
+

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>医院挂号系统 ER 图</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <style>
+      body {
+        font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        margin: 0;
+        padding: 24px;
+        background-color: #f5f6f7;
+      }
+      h1 {
+        margin-bottom: 16px;
+      }
+      .container {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        padding: 24px;
+      }
+      pre.mermaid {
+        background: #f8fafc;
+        border-radius: 8px;
+        padding: 16px;
+        overflow-x: auto;
+      }
+    </style>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: "default" });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>医院挂号系统 ER 图</h1>
+      <p>实体及字段说明：</p>
+      <ul>
+        <li><strong>admin</strong>：管理员账号，负责登录权限控制</li>
+        <li><strong>doctor</strong>：医生基础信息及职称</li>
+        <li><strong>patient</strong>：患者基本资料</li>
+        <li><strong>registration</strong>：挂号记录，关联患者与医生</li>
+      </ul>
+      <pre class="mermaid">
+erDiagram
+    admin {
+        bigint id PK "主键"
+        varchar username UK "账号"
+        varchar password "密码"
+        varchar real_name "姓名"
+    }
+
+    doctor {
+        bigint id PK
+        varchar name
+        varchar department
+        varchar title
+        varchar phone
+        varchar description
+    }
+
+    patient {
+        bigint id PK
+        varchar name
+        varchar gender
+        int age
+        varchar phone
+        varchar id_number
+        varchar address
+    }
+
+    registration {
+        bigint id PK
+        bigint patient_id FK
+        bigint doctor_id FK
+        datetime appointment_time
+        varchar status
+        varchar notes
+        datetime created_at
+    }
+
+    admin ||--o{ registration : "created_by (可选扩展)"
+    doctor ||--o{ registration : "接诊"
+    patient ||--o{ registration : "挂号"
+      </pre>
+      <p>提示：可直接在浏览器打开本文件查看渲染后的 ER 图，如需导出图片可借助浏览器打印或截图工具。</p>
+    </div>
+  </body>
+</html>
+

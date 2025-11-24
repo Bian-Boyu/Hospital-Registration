@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.RegistrationMapper">
+
+    <resultMap id="RegistrationMap" type="com.example.demo.entity.Registration">
+        <id column="id" property="id"/>
+        <result column="patient_id" property="patientId"/>
+        <result column="doctor_id" property="doctorId"/>
+        <result column="patient_name" property="patientName"/>
+        <result column="doctor_name" property="doctorName"/>
+        <result column="appointment_time" property="appointmentTime"/>
+        <result column="status" property="status"/>
+        <result column="notes" property="notes"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        r.id,
+        r.patient_id,
+        r.doctor_id,
+        p.name AS patient_name,
+        d.name AS doctor_name,
+        r.appointment_time,
+        r.status,
+        r.notes,
+        r.created_at
+    </sql>
+
+    <insert id="insert" parameterType="com.example.demo.entity.Registration" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO registration(patient_id,doctor_id,appointment_time,status,notes,created_at)
+        VALUES (#{patientId},#{doctorId},#{appointmentTime},#{status},#{notes},#{createdAt})
+    </insert>
+
+    <update id="update" parameterType="com.example.demo.entity.Registration">
+        UPDATE registration
+        SET patient_id=#{patientId},
+            doctor_id=#{doctorId},
+            appointment_time=#{appointmentTime},
+            status=#{status},
+            notes=#{notes}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM registration WHERE id=#{id}
+    </delete>
+
+    <select id="selectById" resultMap="RegistrationMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM registration r
+                 LEFT JOIN patient p ON r.patient_id = p.id
+                 LEFT JOIN doctor d ON r.doctor_id = d.id
+        WHERE r.id=#{id}
+    </select>
+
+    <select id="selectList" resultMap="RegistrationMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM registration r
+                 LEFT JOIN patient p ON r.patient_id = p.id
+                 LEFT JOIN doctor d ON r.doctor_id = d.id
+        <where>
+            <if test="patientName != null">
+                p.name LIKE #{patientName}
+            </if>
+            <if test="doctorName != null">
+                AND d.name LIKE #{doctorName}
+            </if>
+            <if test="status != null">
+                AND r.status = #{status}
+            </if>
+        </where>
+        ORDER BY r.appointment_time DESC
+    </select>
+
+    <select id="countConflict" resultType="int">
+        SELECT COUNT(1)
+        FROM registration
+        WHERE doctor_id = #{doctorId}
+          AND appointment_time = #{appointmentTime}
+          <if test="excludeId != null">
+              AND id != #{excludeId}
+          </if>
+    </select>
+</mapper>
+
